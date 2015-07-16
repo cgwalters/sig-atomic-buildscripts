@@ -1,0 +1,56 @@
+# This is a set of RPMs built continuously
+# that are overlaid on the baseline CentOS Atomic.
+
+aliases: 
+  - name: github
+    url: git://github.com/
+
+  - name: fd
+    url: git://anongit.freedesktop.org/git/
+
+  - name: gnome
+    url: git://git.gnome.org/
+
+  - name: kernel
+    url: git://git.kernel.org/pub/scm/linux/kernel/git/
+
+  - name: fedora
+    url: git://git.fedorahosted.org/
+
+  - name: fedorapkgs
+    url: git://pkgs.fedoraproject.org/
+
+distgit:
+  prefix: fedorapkgs
+  branch: master
+  
+root:
+  mock: centos-7-x86_64
+
+cache:
+  buildserial: 0
+
+components:
+  - src: gnome:libgsystem
+    distgit: 
+      patches: drop
+
+  - src: gnome:ostree
+
+  - src: github:openSUSE/libsolv
+
+  - src: github:rpm-software-management/hawkey
+
+  - src: github:Tojaj/librepo
+
+  - src: github:hughsie/libhif
+    distgit: 
+      patches: drop
+
+  - src: github:projectatomic/rpm-ostree
+    distgit:
+      patches: drop
+
+  - src: github:coreos/etcd
+
+  - src: github:googlecloudplatform/kubernetes
