@@ -31,6 +31,26 @@ cache:
   buildserial: 0
 
 components:
+  - src: github:coreos/etcd
+
+  # - src: github:shurcooL/sanitized_anchor_name
+  #   # Arbitrary commit as of 20150716
+  #   tag: 11a20b799bf22a02808c862eb6ca09f7fb38f84a
+  #   distgit:
+  #     name: golang-github-shurcooL-sanitized_anchor_name
+
+  # - src: github:russross/blackfriday
+  #   tag: v1.2
+  #   distgit:
+  #     name: golang-github-russross-blackfriday
+
+  # - src: github:cpuguy83/go-md2man
+  #   tag: v1.0.2 
+  #   distgit:
+  #     name: golang-github-cpuguy83-go-md2man
+
+  # - src: github:googlecloudplatform/kubernetes
+
   - src: gnome:libgsystem
     distgit: 
       patches: drop
@@ -50,7 +70,3 @@ components:
   - src: github:projectatomic/rpm-ostree
     distgit:
       patches: drop
-
-  - src: github:coreos/etcd
-
-  - src: github:googlecloudplatform/kubernetes
