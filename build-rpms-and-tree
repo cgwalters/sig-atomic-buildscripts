@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+
+import os
+import sys
+import subprocess
+import argparse
+
+def run_sync(args, **kwargs):
+    """Wraps subprocess.check_call(), logging the command line too."""
+    print("Running: %s" % (subprocess.list2cmdline(args), ))
+    subprocess.check_call(args, **kwargs)
+
+class Stamps(object):
+    def __init__(self):
+        self._dir = 'tmp/'
+
+    def path(self, name):
+        return self._dir + name + '.stamp'
+
+    def exists(self, name):
+        return os.path.isfile(self.path(name))
+
+    def make(self, name):
+        open(self.path(name), 'w').close()
+
+stamps = Stamps()
+
+parser = argparse.ArgumentParser(description='Build RPMs and compose tree')
+parser.add_argument('--no-fetch', action='store_true', help="Don't fetch git repos")
+parser.add_argument('--touch-if-changed', action='store', help="Stamp file to create if something changed")
+parser.add_argument('--proxy', action='store', help="HTTP proxy")
+parser.add_argument('treefile', action='store', help="Path to treefile")
+args = parser.parse_args()
+
+SUDO = os.environ.get('SUDO', 'sudo')
+
+if os.getuid() == 0:
+    # Now sadly, mock requires non-root so it can "drop privileges".
+    # EXCEPT any RPM in the chain's %post runs as root so it's actually
+    # privileged. People in the packaging community generally ignore this
+    # and pretend we're not letting every packager execute arbitrary code
+    # as root on the build server and every machine.
+    #
+    # rpm-ostree just hard requires root for this reason, same as yum.
+    #
+    # We do want to do source fetching as non-root though.
+    print("""This script must be run as non root, but with passwordless sudo enabled""")
+    sys.exit(1)
+    
+argv=['rpmdistro-gitoverlay', 'resolve']
+if not args.no_fetch:
+    argv.append('--fetch-all')
+run_sync(argv)
+run_sync(['rpmdistro-gitoverlay', 'build', '--touch-if-changed', stamps.path('build')])
+if not stamps.exists('build') and stamps.exists('tree'):
+    sys.exit(0)
+
+argv=[SUDO, 'rpm-ostree', 'compose', '--repo=repo', 'tree', '--touch-if-changed', os.path.abspath(stamps.path('tree'))]
+if args.proxy:
+    argv.extend(['--proxy', args.proxy])
+argv.append(args.treefile)
+run_sync(argv)
+if not stamps.exists('tree'):
+    sys.exit(0)
+
+if args.touch_if_changed is not None:
+    open(args.touch_if_changed, 'w').close()

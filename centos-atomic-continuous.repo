@@ -1,0 +1,5 @@
+[centos-atomic-continuous]
+name=centos-atomic-continuous
+gpgcheck=0
+baseurl=file:///srv/binwork/centos-atomic-host/build
+enabled=1

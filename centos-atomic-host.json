@@ -2,10 +2,11 @@
     "comment": "CentOS adaptation of RHEL Atomic host",
 
     "osname": "centos-atomic-host",
-    "ref": "centos-atomic-host/7/x86_64/standard",
+    "ref": "centos-atomic-host/7/x86_64/SIG/continuous/standard",
 
     "repos": ["CentOS-Base", "CentOS-updates", "CentOS-extras",
-              "rhel-atomic-rebuild"],
+	      "rhel-atomic-rebuild",
+              "centos-atomic-continuous"],
 
     "selinux": true,
 

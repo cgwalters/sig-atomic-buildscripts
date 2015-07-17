@@ -51,6 +51,8 @@ components:
 
   # - src: github:googlecloudplatform/kubernetes
 
+  - src: github:aperezdc/nss-altfiles
+
   - src: gnome:libgsystem
     distgit: 
       patches: drop
