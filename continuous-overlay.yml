@@ -33,23 +33,26 @@ cache:
 components:
   - src: github:coreos/etcd
 
-  # - src: github:shurcooL/sanitized_anchor_name
-  #   # Arbitrary commit as of 20150716
-  #   tag: 11a20b799bf22a02808c862eb6ca09f7fb38f84a
-  #   distgit:
-  #     name: golang-github-shurcooL-sanitized_anchor_name
+  - src: github:shurcooL/sanitized_anchor_name
+    # Arbitrary commit as of 20150716
+    tag: 11a20b799bf22a02808c862eb6ca09f7fb38f84a
+    distgit:
+      name: golang-github-shurcooL-sanitized_anchor_name
 
-  # - src: github:russross/blackfriday
-  #   tag: v1.2
-  #   distgit:
-  #     name: golang-github-russross-blackfriday
+  - src: github:russross/blackfriday
+    # What's in the Fedora rawihde specfile as of 20150716
+    tag: 77efab57b2f74dd3f9051c79752b2e8995c8b789
+    distgit:
+      name: golang-github-russross-blackfriday
 
-  # - src: github:cpuguy83/go-md2man
-  #   tag: v1.0.2 
-  #   distgit:
-  #     name: golang-github-cpuguy83-go-md2man
+  - src: github:cpuguy83/go-md2man
+    # What's in the Fedora rawihde specfile as of 20150716
+    tag: 2831f11f66ff4008f10e2cd7ed9a85e3d3fc2bed
+    distgit:
+      name: golang-github-cpuguy83-go-md2man
+      src: file:///home/walters/src/distgit/fedora/golang-github-cpuguy83-go-md2man
 
-  # - src: github:googlecloudplatform/kubernetes
+  - src: github:googlecloudplatform/kubernetes
 
   - src: github:aperezdc/nss-altfiles
 
