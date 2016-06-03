@@ -30,6 +30,9 @@ cache:
   buildserial: 0
 
 components:
+  - distgit: go-srpm-macros
+    srpmroot: true
+
   # Keeping this around for a while to have a convenient
   # repository to test Homu/PRs etc.
   - src: github:cgwalters/playground
@@ -60,9 +63,13 @@ components:
     distgit:
       name: python-docker-py
 
-  - distgit: go-srpm-macros
-
   - distgit: go-compilers
+
+  - src: distgit
+    distgit:
+      name: golang
+      src: https://gitlab.com/cgwalters/golang-rpm-package.git
+      branch: master
 
   - src: github:projectatomic/atomic
     distgit:
