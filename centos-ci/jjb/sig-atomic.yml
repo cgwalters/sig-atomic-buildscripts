@@ -98,7 +98,7 @@
       - atomic-duffy-publisher
 
 - job:
-    name: atomic-dockerimage-centosmin
+    name: atomic-dockerimage-{distro}
     defaults: atomic-defaults
     description: |
       <p>This job builds <a href="https://github.com/cgwalters/centos-dockerbase-minimal">https://github.com/cgwalters/centos-dockerbase-minimal</a></p>
@@ -129,15 +129,15 @@
           set -euo pipefail
           cd ~/centosmin
           sed -i -e "s,^baseurl=https://ci.centos.org/artifacts/,baseurl=http://artifacts.ci.centos.org/," atomic-centos-continuous.repo
-          exec sudo ./build-via-yum.sh
+          exec sudo ./build-via-yum.sh {distro}
           EOF
           chmod a+x build-centos-ci.sh
 
           for x in sig-atomic-buildscripts/ centosmin/ build-centos-ci.sh; do \
-            rsync -q -Hrlptv --stats -e ssh ${x} builder@${DUFFY_HOST}:${x}; \
+            rsync -q -Hrlptv --stats -e ssh ${{x}} builder@${{DUFFY_HOST}}:${{x}}; \
           done
-          ssh -tt builder@${DUFFY_HOST} ./build-centos-ci.sh
-          rsync -q -Hrlptv --stats -e ssh builder@${DUFFY_HOST}:centosmin/centosmin.tar.gz .
+          ssh -tt builder@${{DUFFY_HOST}} ./build-centos-ci.sh
+          rsync -q -Hrlptv --stats -e ssh builder@${{DUFFY_HOST}}:centosmin/{distro}min.tar.gz .
 
     publishers:
       - archive:
