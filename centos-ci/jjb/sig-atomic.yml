@@ -129,7 +129,7 @@
           set -euo pipefail
           cd ~/centosmin
           sed -i -e "s,^baseurl=https://ci.centos.org/artifacts/,baseurl=http://artifacts.ci.centos.org/," atomic-centos-continuous.repo
-          exec sudo ./build-via-yum.sh {distro}
+          exec sudo ./build-via-yum-and-docker.sh {distro}
           EOF
           chmod a+x build-centos-ci.sh
 
