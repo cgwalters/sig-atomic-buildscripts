@@ -98,7 +98,7 @@
       - atomic-duffy-publisher
 
 - job:
-    name: atomic-dockerimage-{distro}
+    name: atomic-dockerimage-{distro}-{distrover}
     defaults: atomic-defaults
     description: |
       <p>This job builds <a href="https://github.com/cgwalters/centos-dockerbase-minimal">https://github.com/cgwalters/centos-dockerbase-minimal</a></p>
@@ -129,7 +129,7 @@
           set -euo pipefail
           cd ~/centosmin
           sed -i -e "s,^baseurl=https://ci.centos.org/artifacts/,baseurl=http://artifacts.ci.centos.org/," atomic-centos-continuous.repo
-          exec sudo ./build-via-yum-and-docker.sh {distro}
+          exec sudo ./build-via-yum-and-docker.sh {distro} {distrover}
           EOF
           chmod a+x build-centos-ci.sh
 
@@ -137,11 +137,11 @@
             rsync -q -Hrlptv --stats -e ssh ${{x}} builder@${{DUFFY_HOST}}:${{x}}; \
           done
           ssh -tt builder@${{DUFFY_HOST}} ./build-centos-ci.sh
-          rsync -q -Hrlptv --stats -e ssh builder@${{DUFFY_HOST}}:centosmin/{distro}min.tar.gz .
+          rsync -q -Hrlptv --stats -e ssh builder@${{DUFFY_HOST}}:centosmin/{distro}-{distrover}min.tar.gz .
 
     publishers:
       - archive:
-          artifacts: 'centosmin.tar.gz'
+          artifacts: '{distro}-{distrover}min.tar.gz'
           allow-empty: 'true'
       - macro-cciskel-duffy-deallocate
 
@@ -158,3 +158,9 @@
       - atomic-rdgo-centos7
       - atomic-treecompose-centos7
       - atomic-cahc-{imagetask}-{branch}
+      - atomic-dockerimage-{distro}-{distrover}:
+          distro: centos
+          distrover: 7
+      - atomic-dockerimage-{distro}-{distrover}:
+          distro: fedora
+          distrover: 24
